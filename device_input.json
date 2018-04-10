@@ -1,0 +1,145 @@
+{
+  "dev0_input":
+  {
+    "dev_name": "fadu_0",
+    "port_num": "0",
+    "dual_mode": "1",
+    "function0_info":
+    {
+      "function_name": "102",
+      "num_of_queue": "1",
+      "queue_depth": "1024",
+      "type_of_CMB": "0",
+      "type_of_interrupt": "2",
+      "num_of_LUN": "16",
+      "LUN_info":
+      {
+        "block_size": "512",
+        "PRACT": "1",
+        "PRCHK": "1",
+        "APPTAG": "00",
+        "meta_size": "8",
+        "PI": "0",
+        "formatted_LBA": "0"
+      }
+    },
+    "function1_info":
+    {
+      "function_name": "104",
+      "num_of_queue": "1",
+      "queue_depth": "1024",
+      "type_of_CMB": "0",
+      "type_of_interrupt": "2",
+      "num_of_LUN": "8",
+      "LUN_info":
+      {
+        "block_size": "512",
+        "PRACT": "1",
+        "APPTAG": "00",
+        "PRCHK": "00",
+        "meta_size": "8",
+        "PI": "0",
+        "formatted_LBA": "0"
+      }
+    }
+  },
+  "dev1_input":
+  {
+    "dev_name": "fadu_0",
+    "port_num": "0",
+    "dual_mode": "1",
+    "function0_info":
+    {
+      "function_name": "102",
+      "num_of_queue": "1",
+      "queue_depth": "1024",
+      "type_of_CMB": "0",
+      "type_of_interrupt": "2",
+      "num_of_LUN": "16",
+      "LUN_info":
+      {
+        "block_size": "512",
+        "PRACT": "1",
+        "APPTAG": "00",
+        "meta_size": "8",
+        "PI": "0",
+        "formatted_LBA": "0"
+      }
+    },
+    "function1_info":
+    {
+      "function_name": "104",
+      "num_of_queue": "1",
+      "queue_depth": "1024",
+      "type_of_CMB": "0",
+      "type_of_interrupt": "2",
+      "num_of_LUN": "8"
+    }
+  },
+  "dev2_input":
+  {
+    "dev_name": "fadu_0",
+    "port_num": "0",
+    "dual_mode": "1",
+    "function0_info":
+    {
+      "function_name": "102",
+      "num_of_queue": "1",
+      "queue_depth": "1024",
+      "type_of_CMB": "0",
+      "type_of_interrupt": "2",
+      "num_of_LUN": "16"
+    },
+    "function1_info":
+    {
+      "function_name": "104",
+      "num_of_queue": "1",
+      "queue_depth": "1024",
+      "type_of_CMB": "0",
+      "type_of_interrupt": "2",
+      "num_of_LUN": "8"
+    },
+    "LUN_info":
+    {
+      "block_size": "512",
+      "PRACT": "1",
+      "APPTAG": "00",
+      "meta_size": "8",
+      "PI": "0",
+      "formatted_LBA": "0"
+    }
+  },
+  "dev3_input":
+  {
+    "dev_name": "fadu_0",
+    "port_num": "0",
+    "dual_mode": "1",
+    "function0_info":
+    {
+      "function_name": "102",
+      "num_of_queue": "1",
+      "queue_depth": "1024",
+      "type_of_CMB": "0",
+      "type_of_interrupt": "2",
+      "num_of_LUN": "16"
+    },
+    "function1_info":
+    {
+      "function_name": "104",
+      "num_of_queue": "1",
+      "queue_depth": "1024",
+      "type_of_CMB": "0",
+      "type_of_interrupt": "2",
+      "num_of_LUN": "8"
+    },
+    "LUN_info":
+    {
+      "block_size": "512",
+      "PRACT": "1",
+      "APPTAG": "00",
+      "meta_size": "8",
+      "PI": "0",
+      "formatted_LBA": "0"
+    }
+  }
+}
