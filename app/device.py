@@ -70,6 +70,7 @@ class Function:
     queue_depth = None
     type_of_CMB = None
     type_of_interrupt = None #legacy = 0, msi = 1, msi-x =2
+    same_option_each_function = None
 
     LUNs= list()
 
@@ -80,6 +81,7 @@ class Function:
         self.queue_depth = param["queue_depth"]
         self.type_of_CMB = param["type_of_CMB"]
         self.type_of_interrupt = param["type_of_interrupt"]
+        self.same_option_each_function = param["same_option_each_function"]
 
         self.num_of_LUN = param["num_of_LUN"]
         self.function_name = param["function_name"]
@@ -87,7 +89,7 @@ class Function:
 
     def debug(self):
         print("Function Info.{0}".format("physical" if self.phy_or_vir else "virtual"))
-        print(self.device, self.phy_or_vir, self.num_of_queue, self.queue_depth, self.type_of_CMB, self.type_of_interrupt, self.num_of_LUN, self.function_name, end = '\n\n')
+        print(self.device, self.phy_or_vir, self.num_of_queue, self.queue_depth, self.type_of_CMB, self.type_of_interrupt, self.num_of_LUN, self.function_name, self.same_option_each_function, end = '\n\n')
 
     def make_lun_list(self,funct, **param):
         lun_info = param["LUN_info"]
