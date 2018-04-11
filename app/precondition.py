@@ -64,7 +64,7 @@ def pre_vf_enable_configure(device):
         else:
             pre_enable_CMB(str(randint(0,3)), port_num, each_pf.function_name)
 
-        restart_file.write("restart="+ each_pf.function_name)
+        restart_file.write("restart=" + each_pf.function_name)
 
     time.slee(10)
 
@@ -110,7 +110,6 @@ def pre_initialize(device):
 
 def pre_get_max_lba(device):
 
-    maxblock = "-1"
     port_num = device.port_num
     target = device.functions["phyFuncs"][0]
     result = grep("/iport"+port_num+"/target"+target+"lun1", "blocks")
@@ -118,11 +117,56 @@ def pre_get_max_lba(device):
     found = []
     for line in result:
         found = patern.findall(line)
-    return found.pop()[:-6]
+    return found.pop()[:-6] if found is not [] else -1
+
+
+def pre_set_default(device):
+
+    port_num = device.port_num
+    for func in device.functions["phtFuncs"]:
+        echo("/iport"+port_num+"/target"+func.function_name, "InterruptTypes=7")
+        echo("/iport"+port_num+"/target"+func.function_name, "UseCMB=0")
+        echo("/proc/vlun/nvme" ,"restart="+func.function_name)
+
+    echo("/iport"+port_num+"/port", "TestLimits=0.0.0")
+    echo("/iport"+port_num+"/port", "NoT10DIF=0")
+    echo("/iport"+port_num+"/port", "PRCHK=0,0")
+    echo("/iport"+port_num+"/port", "AppTag=0,ffff")
+
+    time_set = {
+        "GeneralTimeout" : "15000ms",
+        "ReadWriteTimeout" : "15000ms",
+        "TaskMgmtTimeout": "15000ms",
+        "NoPathTimeout": "15000ms"
+    }
+    pre_set_timeout(**time_set)
+
+def pre_set_timeout(**time_set):
+
+    GTO = time_set["GeneralTimeout"]
+    RWTO = time_set["ReadWriteTimeout"]
+    TMTO = time_set["TaskMgmtTimeout"]
+    NPTO = time_set["NoPathTimeout"]
+
+    echo("/iport0/port", "GeneralTimeout=" + GTO)
+    echo("/iport0/port", "ReadWriteTimeout=" + RWTO)
+    echo("/iport0/port", "TaskMgmtTimeout=" + TMTO)
+    echo("/iport0/port", "NoPathTimeout="+ NPTO)
+
+
+def pre_parse_enabled_LUN(enabled_LUN):
+    bit_to_decimal =[idx+1 for idx, bit in enumerate(enabled_LUN) if bit]
+    return sum(enabled_LUN), bit_to_decimal
 
 
 
+def pre_set_LBA_type(pattern, lbatype, device):
 
+    port_num = device.port_num
+
+    if pattern is "100":
+        tmp_log("-------------------using timestamped pattern--------------------")
+        echo("/iport" + port_num +"/port" , lbatype)
 
 
 

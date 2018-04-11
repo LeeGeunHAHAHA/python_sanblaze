@@ -151,7 +151,6 @@ dataIntegrity() {
 
                                         #Set I/O Running Time according to number of namespace and number of namespace
                                         SetRunTime $simvf $simns $runtime $runtimeout
-
                                         testname[${loopcnt}]=${iotype[tp]}_target${queuetarget}_lun${lunen[$lun]}_cmb${cmbtype[$looptarget]}_intr${intrtype[$looptarget]}_runtype${runtype}_numvf${numvf}
                                         doLogEcho "Test Name = ${testname[$loopcnt]}"
                                         if [ ${randflag} -eq 1 ]; then
@@ -426,7 +425,7 @@ GetMaxLba() {
         re="([0-9]*) blocks"
         if [[ $result =~ $re ]]; then
         maxblock=${BASH_REMATCH[1]}
-        fi
+        f:
         MAXLBA=$maxblock
 }
 
@@ -434,7 +433,7 @@ GetBlockSize() {
 
         local luncnt=$1
 
-        for (( i=0; i<${luncnt}; i++ ))
+        for (( i=0; i<${luncnt}; i++ )):
     do
         result=`grep blocks /iport${port}/target${target}lun${lunen[i]}`
         re="([0-9]*) blocks"
