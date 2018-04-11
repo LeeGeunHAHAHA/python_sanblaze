@@ -2,18 +2,18 @@ import device
 import json
 from random import randint
 import time
+from sanpyutil import echo
+from sanpyutil import grep
+import re
 
 
 
-with open("device_input.json") as file:
-    data = json.loads(file.read())
-device.device_configuration(**data)
 
 """
 device information
 
 
-dev_name = None #device name.
+device_name = None #device name.
 port_num = None #port num that device is connected.
 dual_mode = None #dual =1 , single =0
 functions = {"phyFuncs": [], "vFuncs": []}
@@ -86,23 +86,52 @@ def pre_initialize(device):
     PF_list = device.functions["phyFuncs"]
     VF_list = device.functions["vFuncs"]
 
-    base_addr = "/iport"+port_num+"/target"
+    stop_clear_addr = "/iport"+port_num+"/target"
 
     for each_pf in PF_list:
-        stop_clear_file = open(base_addr+each_pf.function_name)
+        stop_clear_file = open(stop_clear_addr+each_pf.function_name)
         stop_clear_file.write("StopTests")
         stop_clear_file.write("ClearTests")
 
     for each_vf in VF_list:
-        stop_clear_file = open(base_addr+each_vf.function_name)
+        stop_clear_file = open(+stop_clear_addr+each_vf.function_name)
         stop_clear_file.write("StopTests")
         stop_clear_file.write("ClearTests")
 
+    port_file = open("/iport"+port_num+"/port")
+    port_file.write("TimeoutErrorRecovery=0")
+    port_file.write("TestLimits=0,0,0")
+
+    admin_cmd_addr ="/sys/module/nvme/parameters/"
+    echo(admin_cmd_addr+"admin_timeout", "20000")
+    echo(admin_cmd_addr+"abort_timeout", "30000")
+
+
+
+def pre_get_max_lba(device):
+
+    maxblock = "-1"
+    port_num = device.port_num
+    target = device.functions["phyFuncs"][0]
+    result = grep("/iport"+port_num+"/target"+target+"lun1", "blocks")
+    patern = re.compile("\d+ blocks")
+    found = []
+    for line in result:
+        found = patern.findall(line)
+    return found.pop()[:-6]
 
 
 
 
 
+
+
+if __name__ == "__main__":
+    echo("123", "123")
+
+    with open("device_input.json") as file:
+        data = json.loads(file.read())
+    device.device_configuration(**data)
 
 
 

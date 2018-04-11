@@ -1,17 +1,15 @@
 import json
 
-with open("device_input.json") as file:
-    data = json.loads(file.read())
 
 def device_configuration(**data):
     vfunc_start_num = 0
 
     param = data["dev0_input"]
-    dev_name = param["dev_name"]
+    device_name = param["device_name"]
     port_num = param["port_num"]
     dual_mode = param["dual_mode"]
 
-    dev = Device(dev_name, port_num, dual_mode)
+    dev = Device(device_name, port_num, dual_mode)
     function_information_0 = param["function0_info"]
     function_0 = Function(dev, 1, **function_information_0)
     function_0.make_lun_list(function_0, **function_information_0)
@@ -43,20 +41,20 @@ def device_configuration(**data):
 
 class Device:
 
-    dev_name = None #device name.
+    device_name = None #device name.
     port_num = None #port num that device is connected.
     dual_mode = None #dual =1 , single =0
     functions = {"phyFuncs": [], "vFuncs": []}
 
-    def __init__(self, dev_name, port_num, dual_mode):
-        self.dev_name = dev_name
+    def __init__(self, device_name, port_num, dual_mode):
+        self.device_name = device_name
         self.port_num = port_num
         self.dual_mod = dual_mode
         self.debug()
 
     def debug(self):
         print("device_info")
-        print(self.dev_name, self.port_num, self.dual_mod, self.functions, end = "\n\n")
+        print(self.device_name, self.port_num, self.dual_mod, self.functions, end = "\n\n")
 
 
 class Function:
@@ -129,4 +127,4 @@ class LUN:
 
 
 if __name__ == "__main__":
-    device_configuration(**data)
+    print("why")
