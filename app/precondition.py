@@ -169,14 +169,49 @@ def pre_set_LBA_type(pattern, lbatype, device):
         echo("/iport" + port_num +"/port" , lbatype)
 
 
+def pre_set_E2E(device, selected_LUN):
+
+    port_num = selected_LUN.func.device.port_num
+    num_of_LUN = selected_LUN.func.num_of_LUN
+    target_LUN = selected_LUN
+    APPTAG = selected_LUN.APPTAG
+    is_random_PRACT = selected_LUN.random_PRACT
+
+    if is_random_PRACT is 0:
+        PRACT = randint(0, 2) if num_of_LUN not in {20, 26, 30, 32} else 0
+    elif is_random_PRACT is 1:
+        PRACT = 1
+    else:
+        PRACT = 0
+
+    if num_of_LUN >= 17:
+        tmp_log("PRACT={0} in target{1}lun{2}".format(PRACT, target_LUN.LUN_name, num_of_LUN))
+        if PRACT is 0:
+            echo("/iport"+port_num+"/port", "NoT10DIF=2")
+        else:
+            echo("/iport"+port_num+"/port", "NoT10DIF=0")
+        echo("/iport"+port_num+"/port", "PRCHK =7,1")
+        PRCHK = 7
+        echo("/iport"+port_num+"/port", "PRCHK ="+APPTAG+",ffff")
+    else:
+        echo("/iport"+port_num+"/port", "NoT10DIF=0")
+        echo("/iport"+port_num+"/port", "PRCHK =0,0")
+        PRCHK = 0
+        echo("/iport"+port_num+"/port", "PRCHK =0,ffff")
+    selected_LUN.PRACT = PRACT
+    selected_LUN.PCHK = PRCHK
+
+
+
+
+
 
 if __name__ == "__main__":
     echo("123", "123")
 
     with open("device_input.json") as file:
         data = json.loads(file.read())
-    device.device_configuration(**data)
-
+    dev = device.device_configuration(**data)
 
 
 

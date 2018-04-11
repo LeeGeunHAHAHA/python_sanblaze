@@ -14,4 +14,4 @@ def grep(file_addr, keyword):
 
 
 if __name__== "__main__":
-    echo("Test", "hey!")
+    echo("./Test", "This 'ehco method write this str.")

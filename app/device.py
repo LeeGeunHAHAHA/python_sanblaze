@@ -101,7 +101,7 @@ class LUN:
     func = None
 
     block_size = None #(512 or 4096)
-    PRACT = None
+    random_PRACT = None
     PRCHK = None #(3bit data)
     APPTAG = None #(2byte-hex)
 
@@ -113,7 +113,8 @@ class LUN:
         self.LUN_name =  str(func.function_name) + "lun" + str(LUN_name)
         self.func = func
         self.block_size = param["block_size"]
-        self.PRACT = param["PRACT"]
+        self.random_PRACT = param["random_PRACT"]
+        self.PRACT = None
         self.PRCHK = param["PRCHK"]
         self.APPTAG = param["APPTAG"]
         self.meta_size = param["meta_size"]
@@ -123,8 +124,10 @@ class LUN:
 
     def debug(self):
         print("LUN INFO")
-        print(self.LUN_name, self.func, self.block_size, self.PRACT, self.PRCHK, self.APPTAG, self.meta_size, self.PI, self.formatted_LBA, end = "\n\n")
+        print(self.LUN_name, self.func, self.block_size, self.random_PRACT, self.PRCHK, self.APPTAG, self.meta_size, self.PI, self.formatted_LBA, end = "\n\n")
 
 
 if __name__ == "__main__":
-    print("why")
+    with open("device_input.json") as file:
+        data = json.loads(file.read())
+    dev = device_configuration(**data)

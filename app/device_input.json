@@ -16,7 +16,7 @@
       "LUN_info":
       {
         "block_size": "512",
-        "PRACT": "1",
+        "random_PRACT": "1",
         "PRCHK": "1",
         "APPTAG": "00",
         "meta_size": "8",
@@ -36,7 +36,7 @@
       "LUN_info":
       {
         "block_size": "512",
-        "PRACT": "1",
+        "random_PRACT": "1",
         "APPTAG": "00",
         "PRCHK": "00",
         "meta_size": "8",
@@ -62,7 +62,7 @@
       "LUN_info":
       {
         "block_size": "512",
-        "PRACT": "1",
+        "random_PRACT": "1",
         "APPTAG": "00",
         "meta_size": "8",
         "PI": "0",
@@ -108,7 +108,7 @@
     "LUN_info":
     {
       "block_size": "512",
-      "PRACT": "1",
+      "random_PRACT": "1",
       "APPTAG": "00",
       "meta_size": "8",
       "PI": "0",
@@ -143,7 +143,7 @@
     "LUN_info":
     {
       "block_size": "512",
-      "PRACT": "1",
+      "random_PRACT": "1",
       "APPTAG": "00",
       "meta_size": "8",
       "PI": "0",
