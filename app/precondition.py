@@ -1,6 +1,7 @@
 import device
 import json
 from random import randint
+from random import choice
 import time
 from sanpyutil import echo
 from sanpyutil import grep
@@ -46,10 +47,21 @@ def pre_enable_CMB(type_of_CMB, port_num, target_name):
     CMB_file.close()
     tmp_log("CMB enabled")
 
+def pre_enable_INTRT(type_of_INTRT, port_num, target_name):
+
+    INTRT_type = type_of_INTRT
+    INTRT_target = target_name
+
+    echo("/iport"+port_num+"target" + INTRT_target, "InterruptTypes="+INTRT_type)
+
+
+
+
 
 def pre_vf_enable_configure(device):
     port_num = device.port_num
     target_PF_list = device.functions["phyFuncs"]
+    target_VF_list = device.functions["vFuncs"]
 
     restart_file = open("/proc/vlun/nvme")
     for idx, each_pf in enumerate(target_PF_list):
@@ -59,16 +71,13 @@ def pre_vf_enable_configure(device):
         PF_file.write("NumVFs=0")
         tmp_log("vf = 0 for stable")
         time.sleep(3)
-        if not each_pf.same_option_each_pf_function and idx is 1 :
-            pre_enable_CMB(each_pf.type_of_CMB, port_num, each_pf.function_name)
-        else:
-            pre_enable_CMB(str(randint(0,3)), port_num, each_pf.function_name)
-
+        pre_enable_CMB(each_pf.type_of_CMB, port_num, each_pf.function_name)
+        pre_enable_INTRT(each_pf.type_of_INTRT, port_num, each_pf.function_name)
         restart_file.write("restart=" + each_pf.function_name)
 
-    time.slee(10)
+    time.sleep(10)
 
-    for idx, each_pf in enumerate(target_PF_list):
+    for each_pf in target_PF_list:
 
         PF_target = "/iport" + port_num + "/target" + each_pf.function_name
         PF_file = open(PF_target, "w")
@@ -76,9 +85,20 @@ def pre_vf_enable_configure(device):
         tmp_log("enable virtual function")
         time.sleep(10)
 
+    for each_func in target_VF_list:
+        if each_func.same_option_each_function:
+            pre_enable_CMB(randint(0,3), port_num, each_func.function_name)
+            pre_enable_INTRT(choice([0,3,7]), port_num, each_func.function_name)
+            restart_file.write("restart=" + each_func.function_name)
+
+    time.sleep(10)
+
+
     def vf_configure():
         print("not implemented. This will be used for modfying enable information given device")
+
     return vf_configure()
+
 
 def pre_initialize(device):
 
@@ -200,6 +220,10 @@ def pre_set_E2E(device, selected_LUN):
         echo("/iport"+port_num+"/port", "PRCHK =0,ffff")
     selected_LUN.PRACT = PRACT
     selected_LUN.PCHK = PRCHK
+
+#def pre_Identify_controller(target_func, sleep_second):
+#    target = target_func
+
 
 
 

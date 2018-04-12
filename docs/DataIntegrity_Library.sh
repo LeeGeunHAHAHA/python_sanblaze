@@ -591,7 +591,7 @@ SelectTarget() {
                 fi
         else                                                                            # #VF>0
                 if [ ${numport} -eq 1 ]; then
-                if [ `expr ${looptarget} \% \( ${endtarget} \)` == `expr ${endtarget} \- 1` ]; then
+                        if [ `expr ${looptarget} \% \( ${endtarget} \)` == `expr ${endtarget} \- 1` ]; then
                                 queuetarget=${target}                                                                           #PF0 in single port
                         else
                                 queuetarget=`expr ${looptarget} \% \( ${endtarget} \)`          #VFs in single port

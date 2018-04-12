@@ -78,7 +78,7 @@ class Function:
         self.num_of_queue = param["num_of_queue"]
         self.queue_depth = param["queue_depth"]
         self.type_of_CMB = param["type_of_CMB"]
-        self.type_of_interrupt = param["type_of_interrupt"]
+        self.type_of_INTRT = param["type_of_INTRT"]
         self.same_option_each_function = param["same_option_each_function"]
 
         self.num_of_LUN = param["num_of_LUN"]
@@ -87,7 +87,7 @@ class Function:
 
     def debug(self):
         print("Function Info.{0}".format("physical" if self.phy_or_vir else "virtual"))
-        print(self.device, self.phy_or_vir, self.num_of_queue, self.queue_depth, self.type_of_CMB, self.type_of_interrupt, self.num_of_LUN, self.function_name, self.same_option_each_function, end = '\n\n')
+        print(self.device, self.phy_or_vir, self.num_of_queue, self.queue_depth, self.type_of_CMB, self.type_of_INTRT, self.num_of_LUN, self.function_name, self.same_option_each_function, end = '\n\n')
 
     def make_lun_list(self,funct, **param):
         lun_info = param["LUN_info"]

@@ -10,7 +10,7 @@
       "num_of_queue": "1",
       "queue_depth": "1024",
       "type_of_CMB": "0",
-      "type_of_interrupt": "2",
+      "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "16",
       "LUN_info":
@@ -30,7 +30,7 @@
       "num_of_queue": "1",
       "queue_depth": "1024",
       "type_of_CMB": "0",
-      "type_of_interrupt": "2",
+      "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "8",
       "LUN_info":
@@ -56,7 +56,7 @@
       "num_of_queue": "1",
       "queue_depth": "1024",
       "type_of_CMB": "0",
-      "type_of_interrupt": "2",
+      "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "16",
       "LUN_info":
@@ -75,7 +75,7 @@
       "num_of_queue": "1",
       "queue_depth": "1024",
       "type_of_CMB": "0",
-      "type_of_interrupt": "2",
+      "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "8"
     }
@@ -91,7 +91,7 @@
       "num_of_queue": "1",
       "queue_depth": "1024",
       "type_of_CMB": "0",
-      "type_of_interrupt": "2",
+      "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "16"
     },
@@ -101,7 +101,7 @@
       "num_of_queue": "1",
       "queue_depth": "1024",
       "type_of_CMB": "0",
-      "type_of_interrupt": "2",
+      "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "8"
     },
@@ -126,7 +126,7 @@
       "num_of_queue": "1",
       "queue_depth": "1024",
       "type_of_CMB": "0",
-      "type_of_interrupt": "2",
+      "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "16"
     },
@@ -136,7 +136,7 @@
       "num_of_queue": "1",
       "queue_depth": "1024",
       "type_of_CMB": "0",
-      "type_of_interrupt": "2",
+      "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "8"
     },
