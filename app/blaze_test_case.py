@@ -1,0 +1,2 @@
+class Tmptest:
+    device = None
