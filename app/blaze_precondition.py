@@ -1,10 +1,10 @@
-import device
+import blaze_device
 import json
 from random import randint
 from random import choice
 import time
-from sanpyutil import echo
-from sanpyutil import grep
+from blaze_util import echo
+from blaze_util import grep
 import re
 
 
@@ -225,6 +225,12 @@ def pre_set_E2E(device, selected_LUN):
 #    target = target_func
 
 
+def pre_recovery_target():
+    pass
+
+def pre_finish_test():
+    pass
+
 
 
 
@@ -235,7 +241,7 @@ if __name__ == "__main__":
 
     with open("device_input.json") as file:
         data = json.loads(file.read())
-    dev = device.device_configuration(**data)
+    dev = blaze_device.device_configuration(**data)
 
 
 

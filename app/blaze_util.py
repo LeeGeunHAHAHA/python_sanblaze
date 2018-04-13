@@ -10,6 +10,22 @@ def grep(file_addr, keyword):
             possible.remove(line)
     return possible
 
+def log_echo():
+    pass
+
+def status_check():
+    pass
+
+def get_status_check():
+    pass
+
+def run_in_background():
+    pass
+
+def kill_BG_job():
+    pass
+
+
 
 
 
