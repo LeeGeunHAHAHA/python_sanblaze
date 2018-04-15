@@ -818,7 +818,7 @@ ResetTest() {
                                 doLogEcho "Reset Iteration Count of Target${local_target} = ${i}"
                         fi
                         if [ ${reset_type} -eq 0 ]; then
-                                doLogEcho "Injecting NVMe Subsystem Reseti on Controller Target${local_target}"
+                                doLogEcho "Injecting NVMe Subsystem Reset on Controller Target${local_target}"
                                 echo reset_nvm=${local_target} > /proc/vlun/nvme
                         elif [ ${reset_type} -eq 1 ]; then
                                 doLogEcho "Injecting Controller Reset on Controller Target${local_target}"

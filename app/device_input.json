@@ -12,6 +12,7 @@
       "type_of_CMB": "0",
       "type_of_INTRT": "2",
       "same_option_each_function": true,
+      "enabled_LUN": [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
       "num_of_LUN": "16",
       "LUN_info":
       {
@@ -33,6 +34,7 @@
       "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "8",
+      "enabled_LUN": [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
       "LUN_info":
       {
         "block_size": "512",
@@ -59,6 +61,7 @@
       "type_of_INTRT": "2",
       "same_option_each_function": true,
       "num_of_LUN": "16",
+      "enabled_LUN": [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
       "LUN_info":
       {
         "block_size": "512",
@@ -93,6 +96,7 @@
       "type_of_CMB": "0",
       "type_of_INTRT": "2",
       "same_option_each_function": true,
+      "enabled_LUN": [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
       "num_of_LUN": "16"
     },
     "function1_info":
@@ -103,7 +107,8 @@
       "type_of_CMB": "0",
       "type_of_INTRT": "2",
       "same_option_each_function": true,
-      "num_of_LUN": "8"
+      "num_of_LUN": "8",
+      "enabled_LUN": [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     },
     "LUN_info":
     {
@@ -138,6 +143,7 @@
       "type_of_CMB": "0",
       "type_of_INTRT": "2",
       "same_option_each_function": true,
+      "enabled_LUN": [1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
       "num_of_LUN": "8"
     },
     "LUN_info":

@@ -6,9 +6,6 @@ import blaze_precondition
 def io_define_test_area():
     pass
 
-def io_set_runtime():
-    pass
-
 def io_wrie_read(target_LUN, test_name, thread, block_size, runtime_out, access_type, LBA_type):
     port_num = target_LUN.func.device.port
     base_addr = "/iport"+port_num+"/target"
@@ -18,9 +15,7 @@ def io_wrie_read(target_LUN, test_name, thread, block_size, runtime_out, access_
     echo(base_addr+LUN_name, write_format.format(test_name, thread, block_size, runtime_out, access_type, LBA_type))
 
 def io_set_runtime(num_ns, runtime, run_time_out):
-
     sim_ns = num_ns
-
     runtime = sim_ns * runtime
     runtime_out = str(runtime) + "s"
     return runtime_out
