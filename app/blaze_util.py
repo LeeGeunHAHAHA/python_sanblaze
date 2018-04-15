@@ -1,4 +1,6 @@
 import os
+import time
+from san_precondition import pre_finish_test
 
 def echo(addr, keyword):
     target_file = open(addr, "w")
@@ -15,7 +17,7 @@ def grep(file_addr, keyword):
 def log_echo():
     pass
 
-def get_status(function, test_name):
+def get_test_status(function, test_name):
     """
     status means
     0 => stiil testing
@@ -29,9 +31,9 @@ def get_status(function, test_name):
     tests_base_addr = "/iport" + port_num +"/tests/"
     excuted_test_set = set(os.listdir(tests_base_addr))
 
-    try :
+    try:
         excuted_test_set.remove(test_name)
-        with open(tests_base_addr + test_name,"r") as test_file:
+        with open(tests_base_addr + test_name, "r") as test_file:
             lines = test_file.readlines()
             for line in lines :
                 if line.find("Passed"):
@@ -43,20 +45,22 @@ def get_status(function, test_name):
         log_echo("fail to start")
         return -1
 
-
-
-
-
-
-def status_check(function, test_list):
+def status_check(function, test_list, polling_time):
 
     port_num = function.device.port_num
 
     for each_test in test_list:
         log_echo("test name is{0}". format(each_test))
-        status = get_status(function, each_test)
+        status = get_test_status(function, each_test)
+        while status is 0:
+            time.sleep(polling_time)
+            status = get_test_status(function, each_test)
+        if status is 1:
+            log_echo("Test {0} is passed.".format(each_test))
 
-
+        else:
+            log_echo("Test {0} is failed.".format(each_test))
+            pre_finish_test()
 
 
 def run_in_background():

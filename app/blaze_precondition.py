@@ -228,8 +228,13 @@ def pre_set_E2E(device, selected_LUN):
 def pre_recovery_target():
     pass
 
-def pre_finish_test():
-    pass
+def pre_finish_test(device):
+    phyFuncs = device.functions["phyFuncs"]
+    vFuncs = device.functions["vFuncs"]
+    all_funcs = phyFuncs+vFuncs
+
+    for each_funcs in all_funcs :
+        tmp_log("Stop test for {0} target".format(each_funcs.function_name))
 
 
 
