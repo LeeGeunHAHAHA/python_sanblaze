@@ -26,7 +26,6 @@ def get_test_status(function, test_name):
     @return status
 
     """
-    status = 0
     port_num = function.device.port_num
     tests_base_addr = "/iport" + port_num +"/tests/"
     excuted_test_set = set(os.listdir(tests_base_addr))
@@ -47,7 +46,6 @@ def get_test_status(function, test_name):
 
 def status_check(function, test_list, polling_time):
 
-    port_num = function.device.port_num
 
     for each_test in test_list:
         log_echo("test name is{0}". format(each_test))
@@ -60,7 +58,7 @@ def status_check(function, test_list, polling_time):
 
         else:
             log_echo("Test {0} is failed.".format(each_test))
-            pre_finish_test()
+            pre_finish_test(function.device, True)
 
 
 def run_in_background():

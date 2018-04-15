@@ -6,35 +6,9 @@ import time
 from blaze_util import echo
 from blaze_util import grep
 import re
+import os
+import sys
 
-
-
-
-"""
-device information
-
-
-device_name = None #device name.
-port_num = None #port num that device is connected.
-dual_mode = None #dual =1 , single =0
-functions = {"phyFuncs": [], "vFuncs": []}
-
-"""
-
-"""
-
-function information
-
-device = None
-phy_or_vir = None #(0 = vir, 1 =phy)
-function_name = None
-num_of_LUN = None
-num_of_queue = None
-queue_depth = None
-type_of_CMB = None
-type_of_interrupt = None #legacy = 0, msi = 1, msi-x =2
-
-"""
 def tmp_log(message):
     print("this part will be replaced by log. {0}".format(message))
 
@@ -224,17 +198,23 @@ def pre_set_E2E(device, selected_LUN):
 #def pre_Identify_controller(target_func, sleep_second):
 #    target = target_func
 
-
-def pre_recovery_target():
-    pass
-
-def pre_finish_test(device):
+def pre_finish_test(device, test_case,all_stop):
     phyFuncs = device.functions["phyFuncs"]
     vFuncs = device.functions["vFuncs"]
     all_funcs = phyFuncs+vFuncs
 
     for each_funcs in all_funcs :
         tmp_log("Stop test for {0} target".format(each_funcs.function_name))
+        echo("/iport"+device.port_num+"/target"+each_funcs.function_name, "StopTests")
+
+    while test_case.back_ground_admin:
+        os.kill(test_case.back_ground_process.pop(), 9 )
+    while test_case.back_ground_reset:
+        os.kill(test_case.back_ground_process.pop(), 9 )
+
+    if all_stop:
+        sys.exit()
+
 
 
 
