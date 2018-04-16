@@ -1,2 +1,0 @@
-class Tmptest:
-    device = None

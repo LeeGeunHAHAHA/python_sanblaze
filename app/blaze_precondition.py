@@ -102,17 +102,6 @@ def pre_initialize(device):
 
 
 
-def pre_get_max_lba(device):
-
-    port_num = device.port_num
-    target = device.functions["phyFuncs"][0]
-    result = grep("/iport"+port_num+"/target"+target+"lun1", "blocks")
-    patern = re.compile("\d+ blocks")
-    found = []
-    for line in result:
-        found = patern.findall(line)
-    return found.pop()[:-6] if found is not [] else -1
-
 
 def pre_set_default(device):
 

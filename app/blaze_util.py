@@ -1,6 +1,7 @@
 import os
+import re
 import time
-from san_precondition import pre_finish_test
+import blaze_precondition as pre
 
 def echo(addr, keyword):
     target_file = open(addr, "w")
@@ -58,7 +59,22 @@ def status_check(function, test_list, polling_time):
 
         else:
             log_echo("Test {0} is failed.".format(each_test))
-            pre_finish_test(function.device, True)
+            pre.pre_finish_test(function.device, True)
+
+def get_max_LBA(device):
+
+    port_num = device.port_num
+    target = device.functions["phyFuncs"][0]
+    result = grep("/iport"+port_num+"/target"+target+"lun1", "blocks")
+    patern = re.compile("\d+ blocks")
+    found = []
+    for line in result:
+        found = patern.findall(line)
+    return found.pop()[:-6] if found is not [] else -1
+
+def se_simultaneous_NS(function, runtype):
+    selected_LUN = list()
+    return selected_LUN
 
 
 def run_in_background():
