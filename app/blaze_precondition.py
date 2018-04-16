@@ -36,7 +36,6 @@ def pre_vf_enable_configure(device):
     port_num = device.port_num
     target_PF_list = device.functions["phyFuncs"]
     target_VF_list = device.functions["vFuncs"]
-
     restart_file = open("/proc/vlun/nvme")
     for idx, each_pf in enumerate(target_PF_list):
 
@@ -61,8 +60,8 @@ def pre_vf_enable_configure(device):
 
     for each_func in target_VF_list:
         if each_func.same_option_each_function:
-            pre_enable_CMB(randint(0,3), port_num, each_func.function_name)
-            pre_enable_INTRT(choice([0,3,7]), port_num, each_func.function_name)
+            pre_enable_CMB(randint(0, 3), port_num, each_func.function_name)
+            pre_enable_INTRT(choice([0, 3, 7]), port_num, each_func.function_name)
             restart_file.write("restart=" + each_func.function_name)
 
     time.sleep(10)
@@ -154,7 +153,7 @@ def pre_set_LBA_type(pattern, lbatype, device):
 
 def pre_set_E2E(device, selected_LUN):
 
-    port_num = selected_LUN.func.device.port_num
+    port_num = device.port_num
     num_of_LUN = selected_LUN.func.num_of_LUN
     target_LUN = selected_LUN
     APPTAG = selected_LUN.APPTAG

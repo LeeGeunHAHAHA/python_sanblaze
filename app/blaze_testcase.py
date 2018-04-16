@@ -2,12 +2,37 @@ import os
 import sys
 import time
 import random
+from datetime import datetime
 import blaze_precondition as pre
 import blaze_util as bu
 import json
 import blaze_IO as bio
+from blaze_precondtion import pre_set_time
 
-class TC_full_write():
+#   Test ID = 'Compare_target12_lun1_numvf15_parreset_type_2_intv_1'
+#   Threads per test' = '8'
+#   Blocks per I/O' = '32'
+#   I/Os per thread' = '0'
+#   Seek Type = '0' (Sequential)
+#   Opcode = '0' (Random)
+#   Paused = '0'
+#   Test Pattern = '3' (8-bit Incr)
+#   Initiator = '-1' (All)
+#   I/Os per pass = '60'
+#   Multipathing = '0' (Default)
+#   Blocks to Write = '1' (unused except for Rewrite)
+#   Blocks to Skip = '1' (unused except for Rewrite)
+#   Random Seed = '0'
+#   Dedup Ratio = '1:1'
+#   Comp Ratio = '1:1'
+#   Dup Uniq = '0'
+#   I/O Alignment = '0'
+#   Level=0
+#   Index=4829
+
+
+class TCFullWrite:
+
     test_name_list = list()
     max_LBA = None
     device = None
@@ -34,48 +59,74 @@ class TC_full_write():
         return self.test_name_list
 
 
+class TCDataIntegrity:
 
-class TC_Data_integrity:
-    IO_type = ["Read", "Write", "Compare"]
     device = None
-    in_dec_flag = 0
+    is_pre_test = 0
+    IO_type = ["Read", "Write", "Compare"]
+    inc_dec_flag = 0
     vf_funcs = None
-    test_name_list = None
+    ns_block_size = []
+    test_name_list = None #string list that have tests test case excuting.
     random_flag = 0
+    app_tag = "a53c"
+    CMB_rand = 1
+    vf_CMB_on = 0
+    admin_on = 1
+    log_file = None
+    log_echo = None
+    pattern = 7
+    LBA_type = 3
+    need_FullWrite = True
+
+    #initiallize by temp methon. It will be replaced by universal method like json.
+
     def __init__(self,device):
         self.device = device
         self.vf_funcs = self.device.functions["vFuncs"]
+        today = datetime.now()
+        formatted = "{0}-{1}-{2}-{3}:{4}:{5}".format(today.year,today.month, today.day, today.hour, today.minute, today.second)
+        self.log_file = "Data_Integrity" + formatted
+        self.log_echo = bu.log_echo(self.log_file, "a")
+
 
     def do_test(self):
-        vf_list_sampleing ={
-            0:self.vf_funcs,
-            1:[each_vf for idx, each_vf in enumerate(self.vf_funcs) if idx % 8 is 0],
-            2:reversed(self.vf_funcs)
-        }
-        pre.pre_vf_enable_configure(self.device)
-        max_LBA = bu.get_MAX_LBA(self.device)
-        for each_vf in vf_list_sampleing[self.in_dec_flag]:
-            base_addr = "/iport" + each_vf.device.port_num+"/target"
-            bu.echo(base_addr+each_vf.function_name, "WriteEabled=1")
-            full_write_list = None
-            for each_IO_type in self.IO_type:
-                bu.log_echo("starting IO")
-                if full_write_list is None:
-                    full_write_list = TC_full_write(each_vf.device).do_test()
-                for each_LUN in each_vf.LUNs:
-                    runtime_out = bio.set_runtime(each_vf.num_of_lun)
-                    access_type = ["Sequential", "Random"]
-                    bio.io_write_read(each_LUN,each_LUN.LUN_name+each_IO_type, max_LBA, runtime_out, random.choice(access_type) if self.random_flag else "Sequential")
 
-                #def io_wrie_read(target_LUN, test_name, thread, block_size, runtime_out, access_type, LBA_type):
+        # initialize for io integrity
+
+        pre.pre_initiallize(self.device)
+        self.log_echo("Enabled IO Type = {0}".format(self.IO_type))
+        max_LBA = bu.get_max_LBA(self.device)
+        self.log_echo("Maximum LBA = {0}".format(max_LBA))
+        bu.echo("/iport/"+self.device.prot_num+"/port","Retry=0")
+        num_of_enabled_LUN, enabled_LUN_decimal = pre.pre_parse_enabled_LUN(self.device.functions["phyFuncs"][0])
+        self.do_log_echo("Enabled Lun is {0}".format(enabled_LUN_decimal))
+        self.do_log_echo("Enabled num of lun is {0}".format(num_of_enabled_LUN))
+        pre.pre_set_default(self.device)
+        self.ns_block_size = bu.get_block_size(self.device)
+        pre.pre_set_LBA_type(self.pattern, self.LBA_type, self.device)
+        generalTO = "3600000ms"
+        pre_set_time(
+            GeneralTimeout=generalTO, ReadWriteTimeout=generalTO,
+            TaskMgmtTimeout=generalTO, NoPathTimeout=generalTO
+        )
+
+        for run_type in range(0,3):
+            test_LUN = bu.set_simultaneous_NS(self.device, run_type)
+            for each_LUN in test_LUN:
+                for each_IO_type in self.IO_type:
+                    bu.ehco("/iport"+self.device.port_num+"/target"+each_LUN.LUN_name, "WriteEnabled=1")
+                    if self.need_FullWrite:
+                        TCFullWrite(self.device).do_test
+                        self.need_FullWrite = False
+                    bu.log_ehco("Complete Full Write.")
 
 
 
 
 
 
-
-
+        # initialize for io integrity
 
 
 

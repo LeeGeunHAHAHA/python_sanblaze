@@ -26,6 +26,8 @@ dataIntegrity() {
         local intvrt=$7                 #7 : intvrt : interval of runtype
         local inc0dec1rt=$8             #8 : inc0dec1rt : 0=increased interval, 1=decreased interval for runtype
 
+        #   dataIntegrity 16 16 1 1 2 2 1 1 0 0
+
         local testname
         declare -a testname
 
@@ -64,56 +66,33 @@ dataIntegrity() {
                         # 1 : Running I/O each Namespaces of all Functions
                         # 2 : Running I/O all Namespaces of all Functions
                         SetSimultaneousNS_VF $runtype
-
                         for (( tp=0; tp<${#iotype[@]}; tp++ ))
                         do
-                                #Enable Virtual Functions and set CMB type for only PF
                                 vfEnable $numvf $port $target $target2
                                 doLogEcho "============== IO Type = "${iotype[tp]}" ============== "
-
-                                #Pre-condition(Write) for DIFDIX
                                 echo WriteEnabled=1 >/iport${port}/target${target}
-                                #Sequential full write according namespace type because DIFDIX(PI) namespace need pre-condition write to prevent miscompare
                                 if [ ${fullwriteinit} -eq 0 ]; then
                                         FullWriteForDIFDIX ${lunen[@]}
                                 fi
                                 doLogEcho "Complete Seq. Full Write"
-                                #FullReadForDIFDIX ${lunen[@]}
-                                #doLogEcho "Complete Seq. Full Read"
-
-                                #Test ranges which are divided according to the number of VFs
                                 divide=`expr ${#lunset[@]} \* ${simvf}`
-                                #The number of test loops
                                 endloop=`expr ${numport} \* ${luncnt} \* \( ${numvf} \+ 1 \)`
-                                #Total target number including PFs
                                 numtarget=`expr ${numport} \* \( ${numvf} \+ 1 \)`
-
-                                #Setting options for each functions
                                 doLogEcho "============== Set Options for each target  ============== "
-                                #180220 : If sameoption is enables, all function should be set same CMB Option
                                 if [ $sameoption -eq 1 ]; then
                                         sft=`expr ${RANDOM} \% 2 \+ 1`  #VF can't use INT       #VF can't use INTxx
                                 fi
-
                                 for (( looptarget=0; looptarget<${numtarget}; looptarget++ ))
                                 do
-                                        #Select Target according to number of namespace and number of namespace
                                         SelectTarget $numvf $looptarget $numtarget
-                                        #Set Interrupt Type per each functions
                                         RandomINTRType $port $queuetarget
                                         intrtype[$looptarget]=${intr_values} #this value is used for test-naming
-
-                                        #Currently, only PF supports CMB
                                         if [ ${queuetarget} -eq ${target} ] || [ ${queuetarget} -eq ${target2} ]; then
-                                                #set CMB value for PF because PF reset should be issued in only VF=0 status
-                                                #180222 : Sanblaze doesn't yet fix this issue.
                                                 doLogEcho "CMB(cmbtype=${cmbtype[looptarget]} is already set at VF enable"
                                         else
                                                 if [ ${vf_cmb_on} -eq 0 ]; then
-                                                        #VF CMB doesn't support yet, but it will be supported later (180222)
                                                         cmbtype[$looptarget]=0
                                                 else
-                                                        #VF CMB supports (180315)
                                                         RandomCMBType $port $queuetarget
                                                         cmbtype[$looptarget]=cmben
                                                 fi
@@ -122,17 +101,11 @@ dataIntegrity() {
                                         fi
 
                                         if [ ${admin_on} -eq 1 ]; then
-                                                #Issue Admin command(Identify Controller) every 10secs
-                                                #IdentifyController
-                                                #1 : Target number
-                                                #2 : Sleep Time(Interval Time) between Identify Commands
                                                 IdentifyController $queuetarget 10 &
                                                 bgname[looptarget]=$!   #background job name. It will be used when I/O test is completed and restart other I/O testings
                                                 doLogEcho "Admin CMD Background Job's PID=${bgname[looptarget]}"
                                         fi
-
                                 done
-
                                 sleep 5
 
                                 loopcnt=0

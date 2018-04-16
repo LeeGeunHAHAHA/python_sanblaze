@@ -15,8 +15,16 @@ def grep(file_addr, keyword):
             possible.remove(line)
     return possible
 
-def log_echo():
-    pass
+def log_echo(log_file = None):
+
+    def log(message):
+        file = open(log_file, "a")
+        print(message)
+        file.writelines(message+"\n")
+    return log
+
+
+
 
 def get_test_status(function, test_name):
     """
@@ -72,9 +80,41 @@ def get_max_LBA(device):
         found = patern.findall(line)
     return found.pop()[:-6] if found is not [] else -1
 
-def se_simultaneous_NS(function, runtype):
-    selected_LUN = list()
-    return selected_LUN
+
+def set_simultaneous_NS(device, runtype):
+
+    LUN_list = []
+    if runtype is 0:
+        for each_func in device.function:
+            LUN_list.append(each_func.LUNS[0])
+
+    if runtype is 1:
+        for each_func in device.function["phyFuncs"]:
+            LUN_list.append(each_func.LUNS[0])
+        for each_func in device.function["vFuncs"]:
+            LUN_list.append(each_func.LUNS[0])
+
+    if runtype is 2:
+        for each_func in device.function["phyFuncs"]:
+            LUN_list += each_func.LUNS
+        for each_func in device.function["vFuncs"]:
+            LUN_list += each_func.LUNS
+
+    return LUN_list
+
+
+def get_block_size(device):
+    block_list = []
+    port_num = device.port_num
+    phyfunc = device.functions["phyFuncs"][0]
+    for target in phyfunc.LUNs:
+        result = grep("/iport"+port_num+"/target"+target+"lun1", "blocks")
+        patern = re.compile("\d+ blocks")
+        found = []
+        for line in result:
+            found = patern.findall(line)
+        block_list.append(found.pop()[:-6] if found is not [] else -1)
+    return block_list
 
 
 def run_in_background():

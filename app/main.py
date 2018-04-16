@@ -78,7 +78,6 @@ if __name__ == "__main__":
         print(tc.tc_name)
     args = [(tc, ready_dev_queue, working_dev_list) for tc in TC_list]
     num_of_worker = ready_dev_queue.qsize()
-    print(num_of_worker)
     with Pool(processes=num_of_worker) as pool:
         res = pool.map_async(worker, args)
         res.get(timeout=1000)
