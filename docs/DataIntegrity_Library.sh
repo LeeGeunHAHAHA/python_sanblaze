@@ -117,14 +117,9 @@ dataIntegrity() {
                                 do
                                         doLogEcho "Current Loop Count = $loop"
                                         doLogEcho "============== Running I/O ============== "
-                                        #Select Target according to number of namespace and number of namespace
                                         SelectTarget $numvf $looptarget $numtarget
-                                        #Define Test Limit and Position according to target number
                                         DefineTestArea $divide $queuetarget ${looptarget} ${lun}
-
-                                        #Set I/O Running Time according to number of namespace and number of namespace
                                         SetRunTime $simvf $simns $runtime $runtimeout
-
                                         testname[${loopcnt}]=${iotype[tp]}_target${queuetarget}_lun${lunen[$lun]}_cmb${cmbtype[$looptarget]}_intr${intrtype[$looptarget]}_runtype${runtype}_numvf${numvf}
                                         doLogEcho "Test Name = ${testname[$loopcnt]}"
                                         if [ ${randflag} -eq 1 ]; then
@@ -134,32 +129,17 @@ dataIntegrity() {
                                                         blocksize=`expr ${RANDOM} \% ${mdts} \+ 1`
                                                 fi
                                         fi
-
-                                        #determine access type
                                         acctype=`expr ${RANDOM} \% 2`
                                         if [ $acctype -eq 0 ]; then
                                                 accsym="Sequential"
                                         else
                                                 accsym="Random"
                                         fi
-
                                         doLogEcho "Write Enable to target${queuetarget}"
                                         echo WriteEnabled=1 >/iport${port}/target${queuetarget}
-
-                                        #Enable DIFDIX Options according to namespace
                                         SetE2E ${lunen[lun]} ${queuetarget}
-
-                                        #run I/O testing
                                         echo ${testname[${loopcnt}]},${thread},${blocksize},${runtimeout},${acctype},0,0,${lbatype},-1,60,0,1,1,0,1:1,1:1,0,-0 > /iport$port/target${queuetarget}lun${lunen[$lun]}
-
                                         doLogEcho "Port=${port}, Target=${queuetarget}, NS=${lunen[$lun]}, #Test_Func=$simvf, #Test_NS=$simns, AccType=${accsym}, Blocksize=${blocksize}, Runtime=${runtimeout} "
-
-
-                                        #Determine to check timing for I/O status according run type
-                                        # Run Type
-                                        # 0 : Running I/O each Namespaces of each Functions
-                                        # 1 : Running I/O each Namespaces of all Functions
-                                        # 2 : Running I/O all Namespaces of all Functions
                                         if [ ${runtype} -eq 0 ]; then
                                                 statuscheck testname[@] $loopcnt $poll
                                                 loopcnt=0
@@ -186,20 +166,15 @@ dataIntegrity() {
                                         fi
 
                                 done #target * lun
-
-                                #Setting options for each functions
                                 doLogEcho "============== Clear BackGound Job for each targets  ============== "
                                 for (( looptarget=0; looptarget<${numtarget}; looptarget++ ))
                                 do
-                                        #kill Background Job for Admin Command
                                         if [ ${bgname[looptarget]} -ne 0 ]; then
                                                 doLogEcho "Kill BackGround Job(PID=${bgname[looptarget]})"
                                                 kill -9 ${bgname[looptarget]} 2 >/dev/null
                                         fi
                                 done
-
                         done #iotype
-
                 done #runtype
 
         done #numvf

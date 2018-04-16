@@ -1,7 +1,7 @@
 import os
 import sys
 import time
-import random
+from random import choice
 from datetime import datetime
 import blaze_precondition as pre
 import blaze_util as bu
@@ -67,6 +67,7 @@ class TCDataIntegrity:
     inc_dec_flag = 0
     vf_funcs = None
     ns_block_size = []
+    INTRT_type_list = []
     test_name_list = None #string list that have tests test case excuting.
     random_flag = 0
     app_tag = "a53c"
@@ -120,6 +121,29 @@ class TCDataIntegrity:
                         TCFullWrite(self.device).do_test
                         self.need_FullWrite = False
                     bu.log_ehco("Complete Full Write.")
+                    devide = int()
+                    if run_type is 0:
+                        devide = 2 if self.device.dual_mode else 1
+                    if run_type is 1 or run_type is 2:
+                        devide = sum(self.device.functions["phyFuncs"] + self.device.functions["vFuncs"])
+                    if each_LUN.function.same_option_each_function:
+                        intrt = each_LUN.function.type_of_INTRT
+                        pre.pre_enable_INTRT(intrt, self.device.port_num, each_LUN.LUN_name)
+                    else:
+                        intrt = choice([1,3,7])
+                        pre.pre_enable_INTRT(intrt, self.device.port_num, each_LUN.LUN_name)
+                    self.INTRT_type_list.append(intrt)
+
+                    """
+                    vf - CMB
+                    """
+
+
+
+
+
+
+
 
 
 
