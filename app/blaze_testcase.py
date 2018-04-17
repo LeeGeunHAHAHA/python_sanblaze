@@ -79,6 +79,8 @@ class TCDataIntegrity:
     pattern = 7
     LBA_type = 3
     need_FullWrite = True
+    runtime = 30
+    thread = 256
 
     #initiallize by temp methon. It will be replaced by universal method like json.
 
@@ -137,6 +139,20 @@ class TCDataIntegrity:
                     """
                     vf - CMB
                     """
+            time.slee(5)
+            for idx, each_LUN in enumerate(test_LUN):
+                limit_size = bio.define_area(sum(each_LUN.LUNs), each_LUN.function)
+                runtime_out = bio.io_set_runtime(sum(each_LUN.LUNs), self.runtime)
+                access_type = choice["Sequential", "Random"]
+                bu.log_echo("Write Enable to target{0}".format(each_LUN.LUN_name))
+                bu.echo("/iport"+self.device.port_num+"/target"+each_LUN.LUN_name, "WriteEnabled=1")
+                pre.pre_set_E2E(self.device, each_LUN)
+                bio.io_write_read(each_LUN, self.test_name_list[idx], self.thread,  self.ns_block_size[idx], runtime_out, access_type, self.LBA_type)
+
+
+
+
+
 
 
 
