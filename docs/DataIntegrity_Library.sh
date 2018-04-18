@@ -696,7 +696,7 @@ IdentifyController() {
 
         while [ 1 ]
         do
-            io /iport${port}/target${local_target} IdentifyController -q -timeout ${GeneralTO}
+            io /iport${port}/target${local_target} IdentifyCntroller -q -timeout ${GeneralTO}
         i=$?
             if (( $i )); then
                         doLogEcho " ERROR(P${port}:T${local_target}), return value=${i}: IdentifyController command failed, unable to verify the size of the returned data structure and to determine the number of valid namespaces"

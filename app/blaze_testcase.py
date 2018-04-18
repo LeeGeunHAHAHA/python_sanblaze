@@ -81,6 +81,7 @@ class TCDataIntegrity:
     need_FullWrite = True
     runtime = 30
     thread = 256
+    bg_job_list = []
 
     #initiallize by temp methon. It will be replaced by universal method like json.
 
@@ -148,6 +149,9 @@ class TCDataIntegrity:
                 bu.echo("/iport"+self.device.port_num+"/target"+each_LUN.LUN_name, "WriteEnabled=1")
                 pre.pre_set_E2E(self.device, each_LUN)
                 bio.io_write_read(each_LUN, self.test_name_list[idx], self.thread,  self.ns_block_size[idx], runtime_out, access_type, self.LBA_type)
+
+                if run_type is 0:
+                    bu.status_check(self.device, self.test_name_list, 10)
 
 
 

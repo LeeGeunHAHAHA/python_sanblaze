@@ -2,6 +2,7 @@ import os
 import re
 import time
 import blaze_precondition as pre
+import threading
 
 def echo(addr, keyword):
     target_file = open(addr, "w")
@@ -26,7 +27,7 @@ def log_echo(log_file = None):
 
 
 
-def get_test_status(function, test_name):
+def get_test_status(device, test_name):
     """
     status means
     0 => stiil testing
@@ -35,7 +36,7 @@ def get_test_status(function, test_name):
     @return status
 
     """
-    port_num = function.device.port_num
+    port_num = device.port_num
     tests_base_addr = "/iport" + port_num +"/tests/"
     excuted_test_set = set(os.listdir(tests_base_addr))
 
@@ -53,21 +54,21 @@ def get_test_status(function, test_name):
         log_echo("fail to start")
         return -1
 
-def status_check(function, test_list, polling_time):
+def status_check(device, test_list, polling_time):
 
 
     for each_test in test_list:
         log_echo("test name is{0}". format(each_test))
-        status = get_test_status(function, each_test)
+        status = get_test_status(device, each_test)
         while status is 0:
             time.sleep(polling_time)
-            status = get_test_status(function, each_test)
+            status = get_test_status(device, each_test)
         if status is 1:
             log_echo("Test {0} is passed.".format(each_test))
 
         else:
             log_echo("Test {0} is failed.".format(each_test))
-            pre.pre_finish_test(function.device, True)
+            pre.pre_finish_test(device, True)
 
 def get_max_LBA(device):
 
@@ -117,8 +118,25 @@ def get_block_size(device):
     return block_list
 
 
-def run_in_background():
-    pass
+class BackGroundJobMaker(threading.Thread):
+    args = None
+    def __init__(self, run_in_bg_function, *args):
+        threading.Thread.__init__(self, target = run_in_bg_function , args = args)
+        self.runnable = run_in_bg_function
+        self.daemon = True
+        self.args = args
+
+    def run(self):
+        self.runnable(self.args)
+
+def do_back_ground_job(some_func, *args):
+    i = 1
+    while i:
+
+
+
+
+
 
 def kill_BG_job():
     pass
