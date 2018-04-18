@@ -7,7 +7,7 @@ import blaze_precondition as pre
 import blaze_util as bu
 import json
 import blaze_IO as bio
-from blaze_precondtion import pre_set_time
+import blaze_precondition  as pre
 
 #   Test ID = 'Compare_target12_lun1_numvf15_parreset_type_2_intv_1'
 #   Threads per test' = '8'

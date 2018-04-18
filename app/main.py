@@ -15,8 +15,8 @@ class TC0:
         self.tc_data = tc_data
 
     def do_test(self, device):
-        print("end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!My Test Case_name is {0}, And My device_name is {1}".format(self.tc_name, device.device_name))
-        time.sleep(randint(0,3) )
+        print("testing : My Test Case_name is {0}, And My device_name is {1}".format(self.tc_name, device.device_name))
+        time.sleep(randint(10,30) )
         return True
 
 
@@ -29,8 +29,8 @@ class TC1:
         self.tc_data = tc_data
 
     def do_test(self, device):
-        print("end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!테스트 케이스 이름은 {0}, 디바이스 이름은 {1}".format(self.tc_name, device.device_name))
-        time.sleep(randint(0,3))
+        print("testing : 테스트 케이스 이름은 {0}, 디바이스 이름은 {1}".format(self.tc_name, device.device_name))
+        time.sleep(randint(10,20))
         return True
 
 
@@ -74,8 +74,6 @@ if __name__ == "__main__":
     """
     TC_list = get_TC_list() 
     """
-    for tc in TC_list:
-        print(tc.tc_name)
     args = [(tc, ready_dev_queue, working_dev_list) for tc in TC_list]
     num_of_worker = ready_dev_queue.qsize()
     with Pool(processes=num_of_worker) as pool:

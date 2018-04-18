@@ -130,8 +130,7 @@ class BackGroundJobMaker(threading.Thread):
         self.runnable(self.args)
 
 def do_back_ground_job(some_func, *args):
-    i = 1
-    while i:
+    pass
 
 
 
