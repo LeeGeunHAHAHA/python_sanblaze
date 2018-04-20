@@ -118,10 +118,11 @@ def get_block_size(device):
     return block_list
 
 
-class BackGroundJobMaker(threading.Thread):
+class BackGroundJob(threading.Thread):
+
     args = None
     def __init__(self, run_in_bg_function, *args):
-        threading.Thread.__init__(self, target = run_in_bg_function , args = args)
+        threading.Thread.__init__(self, target=run_in_bg_function, args=args)
         self.runnable = run_in_bg_function
         self.daemon = True
         self.args = args
@@ -130,16 +131,16 @@ class BackGroundJobMaker(threading.Thread):
         self.runnable(self.args)
 
 def do_back_ground_job(some_func, *args):
-    pass
+    threads = []
+
+    return threads
 
 
 
 
-
-
-def kill_BG_job():
-    pass
-
+def kill_BG_job(threads):
+    for th in threads:
+        th.join()
 
 
 

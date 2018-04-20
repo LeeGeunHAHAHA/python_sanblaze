@@ -196,9 +196,9 @@ def pre_finish_test(device, test_case,all_stop):
         echo("/iport"+device.port_num+"/target"+each_funcs.function_name, "StopTests")
 
     while test_case.back_ground_admin:
-        os.kill(test_case.back_ground_process.pop(), 9 )
+        os.kill(test_case.back_ground_process.pop(), 9)
     while test_case.back_ground_reset:
-        os.kill(test_case.back_ground_process.pop(), 9 )
+        os.kill(test_case.back_ground_process.pop(), 9)
 
     if all_stop:
         sys.exit()

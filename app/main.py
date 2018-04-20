@@ -49,6 +49,8 @@ def worker(*args):
     working_dev_list = args[-1][2]
     dev = ready_dev_queue.get()
     working_dev_list.append(dev)
+    for tc in TC_list:
+        print(tc.tc_name)
     print("{0} is testing".format(TC.tc_name))
     print("this message will be replaced by log")
     done = TC.do_test(dev)
