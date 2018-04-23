@@ -110,7 +110,7 @@ class TCDataIntegrity:
         self.ns_block_size = bu.get_block_size(self.device)
         pre.pre_set_LBA_type(self.pattern, self.LBA_type, self.device)
         generalTO = "3600000ms"
-        pre_set_time(
+        pre.pre_set_time(
             GeneralTimeout=generalTO, ReadWriteTimeout=generalTO,
             TaskMgmtTimeout=generalTO, NoPathTimeout=generalTO
         )
