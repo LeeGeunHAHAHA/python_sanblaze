@@ -130,10 +130,10 @@ class BackGroundJob(threading.Thread):
     def run(self):
         self.runnable(self.args)
 
-def do_back_ground_job(some_func,*args, threads):
+def do_back_ground_job(some_func,*args, thread_list):
 
     back_ground_function = BackGroundJob(some_func, args)
-    threads.append(back_ground_function)
+    thread_list.append(back_ground_function)
     back_ground_function.run()
 
 
